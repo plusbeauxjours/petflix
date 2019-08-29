@@ -1,15 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 import Router from "./Router";
-import Header from "./Header";
+import GlobalStyles from "./GlobalStyles";
 
-const App: React.FC = () => {
-  return (
-    <>
-      <Header />
-      <Router />
-      <div className="App" />
-    </>
-  );
-};
+class App extends Component {
+  render() {
+    return (
+      <>
+        <Router />
+        <GlobalStyles />
+      </>
+    );
+  }
+}
 
 export default App;
