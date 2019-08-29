@@ -18,9 +18,6 @@ const HeaderContainer = styled.header`
 
 const List = styled.ul`
   display: flex;
-  &:hover {
-    background-color: blue;
-  }
 `;
 
 const Item = styled.li<ITheme>`
