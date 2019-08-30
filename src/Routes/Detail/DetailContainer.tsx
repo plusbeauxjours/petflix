@@ -3,25 +3,25 @@ import DetailPresenter from "./DetailPresenter";
 
 interface IProps {
   result: any;
-  error: string;
   loading: boolean;
+  error: string;
 }
 
 interface IState {
   result: any;
-  error: string;
   loading: boolean;
+  error: string;
 }
 
 class DetailContainer extends React.Component<IProps, IState> {
   public state = {
     result: null,
-    error: null,
-    loading: true
+    loading: true,
+    error: null
   };
   public render() {
-    const { result, error, loading } = this.state;
-    return <DetailPresenter result={result} error={error} loading={loading} />;
+    const { result, loading, error } = this.state;
+    return <DetailPresenter result={result} loading={loading} error={error} />;
   }
 }
 

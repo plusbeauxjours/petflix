@@ -8,13 +8,13 @@ interface IProps {
 
 const DetailPresenter: React.FunctionComponent<IProps> = ({
   result,
-  error,
-  loading
+  loading,
+  error
 }) => (
   <>
     <p>{result}</p>
-    <p>{error}</p>
     <p>{loading}</p>
+    <p>{error}</p>
   </>
 );
 

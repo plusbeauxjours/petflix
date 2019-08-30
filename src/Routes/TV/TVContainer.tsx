@@ -1,5 +1,5 @@
 import React from "react";
-import SearchPresenter from "./SearchPresenter";
+import TVPresenter from "./TVPresenter";
 
 interface IProps {
   movieResults: any;
@@ -17,7 +17,7 @@ interface IState {
   error: string;
 }
 
-class SearchContainer extends React.Component<IProps, IState> {
+class TVContainer extends React.Component<IProps, IState> {
   public state = {
     movieResults: null,
     tvResults: null,
@@ -28,7 +28,7 @@ class SearchContainer extends React.Component<IProps, IState> {
   public render() {
     const { movieResults, tvResults, searchTerm, loading, error } = this.state;
     return (
-      <SearchPresenter
+      <TVPresenter
         movieResults={movieResults}
         tvResults={tvResults}
         searchTerm={searchTerm}
@@ -39,4 +39,4 @@ class SearchContainer extends React.Component<IProps, IState> {
   }
 }
 
-export default SearchContainer;
+export default TVContainer;

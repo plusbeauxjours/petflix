@@ -1,37 +1,58 @@
 import React from "react";
 import HomePresenter from "./HomePresenter";
+import { moviesApi } from "../../api";
 
 interface IProps {
-  topRated: any;
-  popular: any;
-  airingToday: any;
-  loading: boolean;
-  error: string;
+  nowPlaying: null;
+  upcoming: null;
+  popular: null;
+  loading: true;
+  error: null;
 }
 
 interface IState {
-  topRated: any;
+  nowPlaying: any;
+  upcoming: any;
   popular: any;
-  airingToday: any;
   loading: boolean;
   error: string;
 }
 
 class HomeContainer extends React.Component<IProps, IState> {
   public state = {
-    topRated: null,
+    nowPlaying: null,
+    upcoming: null,
     popular: null,
-    airingToday: null,
     loading: true,
     error: null
   };
+  public async componentDidMount() {
+    try {
+      const {
+        data: { results: nowPlaying }
+      } = await moviesApi.nowPlaying();
+      const {
+        data: { results: upcoming }
+      } = await moviesApi.upcoming();
+      const {
+        data: { results: popular }
+      } = await moviesApi.popular();
+      this.setState({ nowPlaying, upcoming, popular });
+    } catch {
+      this.setState({ error: "Can't find movies informateion" });
+    } finally {
+      this.setState({
+        loading: false
+      });
+    }
+  }
   public render() {
-    const { topRated, popular, airingToday, loading, error } = this.state;
+    const { nowPlaying, upcoming, popular, loading, error } = this.state;
     return (
       <HomePresenter
-        topRated={topRated}
+        nowPlaying={nowPlaying}
+        upcoming={upcoming}
         popular={popular}
-        airingToday={airingToday}
         loading={loading}
         error={error}
       />

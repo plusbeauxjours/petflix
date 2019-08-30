@@ -1,24 +1,24 @@
 import React from "react";
 
 interface IProps {
-  topRated: any;
-  popular: any;
-  airingToday: any;
+  nowPlaying: null;
+  upcoming: null;
+  popular: null;
   loading: boolean;
-  error: string;
+  error: null;
 }
 
 const HomePresenter: React.FunctionComponent<IProps> = ({
-  topRated,
+  nowPlaying,
+  upcoming,
   popular,
-  airingToday,
   loading,
   error
 }) => (
   <>
-    <p>{topRated}</p>
+    <p>{nowPlaying}</p>
+    <p>{upcoming}</p>
     <p>{popular}</p>
-    <p>{airingToday}</p>
     <p>{loading}</p>
     <p>{error}</p>
   </>
