@@ -22,10 +22,13 @@ class SearchContainer extends React.Component<IProps, IState> {
   public state = {
     movieResults: null,
     tvResults: null,
-    searchTerm: "",
+    searchTerm: "code",
     loading: false,
     error: null
   };
+  public componentDidMount() {
+    this.handleSubmit();
+  }
   public render() {
     const { movieResults, tvResults, searchTerm, loading, error } = this.state;
     return (
@@ -43,6 +46,7 @@ class SearchContainer extends React.Component<IProps, IState> {
     const { searchTerm } = this.state;
     if (searchTerm !== "") {
       this.searchByTerm();
+      console.log(searchTerm);
     }
   };
   public searchByTerm = async () => {
@@ -52,9 +56,11 @@ class SearchContainer extends React.Component<IProps, IState> {
       const {
         data: { results: movieResults }
       } = await movieApi.search(searchTerm);
+      console.log(movieResults);
       const {
         data: { results: tvResults }
       } = await tvApi.search(searchTerm);
+      console.log(tvResults);
       this.setState({ movieResults, tvResults });
     } catch {
       this.setState({ error: "Can't find results." });
