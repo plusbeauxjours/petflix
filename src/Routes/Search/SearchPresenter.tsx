@@ -10,7 +10,8 @@ interface IProps {
   searchTerm: string;
   loading: boolean;
   error: string;
-  handleSubmit: () => void;
+  handleSubmit: (event) => void;
+  updateTerm: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const SearchPresenter: React.FunctionComponent<IProps> = ({

@@ -4,21 +4,21 @@ import Section from "../../Components/Section";
 import Loader from "../../Components/Loader";
 
 const Container = styled.div`
-  padding: 0 10px;
+  padding: 0 20px;
 `;
 
 interface IProps {
-  nowPlaying: null;
-  upcoming: null;
-  popular: null;
+  nowPlaying: any;
+  upcoming: any;
+  popular: any;
   loading: boolean;
   error: null;
 }
 
 const HomePresenter: React.FunctionComponent<IProps> = ({
-  nowPlaying = [],
-  upcoming = [],
-  popular = [],
+  nowPlaying,
+  upcoming,
+  popular,
   loading,
   error
 }) => {
@@ -41,7 +41,7 @@ const HomePresenter: React.FunctionComponent<IProps> = ({
             ))}
           </Section>
         )}
-        {popular && popular.length > 0 && popular.length > 0 && (
+        {popular && popular.length > 0 && (
           <Section title="Popular Movies">
             {popular.map(movie => (
               <span key={movie.id}>{movie.title}</span>

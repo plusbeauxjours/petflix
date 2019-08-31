@@ -26,9 +26,6 @@ class SearchContainer extends React.Component<IProps, IState> {
     loading: false,
     error: null
   };
-  public componentDidMount() {
-    this.handleSubmit();
-  }
   public render() {
     const { movieResults, tvResults, searchTerm, loading, error } = this.state;
     return (
@@ -39,14 +36,23 @@ class SearchContainer extends React.Component<IProps, IState> {
         loading={loading}
         error={error}
         handleSubmit={this.handleSubmit}
+        updateTerm={this.updateTerm}
       />
     );
   }
-  public handleSubmit = () => {
+  public updateTerm: React.ChangeEventHandler<HTMLInputElement> = event => {
+    const {
+      target: { value }
+    } = event;
+    this.setState({
+      searchTerm: value
+    });
+  };
+  public handleSubmit = event => {
+    event.preventDefault();
     const { searchTerm } = this.state;
     if (searchTerm !== "") {
       this.searchByTerm();
-      console.log(searchTerm);
     }
   };
   public searchByTerm = async () => {
