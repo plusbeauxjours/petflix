@@ -22,7 +22,7 @@ class SearchContainer extends React.Component<IProps, IState> {
   public state = {
     movieResults: null,
     tvResults: null,
-    searchTerm: "code",
+    searchTerm: "",
     loading: false,
     error: null
   };
