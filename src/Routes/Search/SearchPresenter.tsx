@@ -1,5 +1,9 @@
 import React from "react";
+import styled from "styled-components";
 
+const Container = styled.div`
+  padding: 0 10px;
+`;
 interface IProps {
   movieResults: any;
   tvResults: any;
@@ -16,6 +20,6 @@ const SearchPresenter: React.FunctionComponent<IProps> = ({
   loading,
   error,
   handleSubmit
-}) => <>{error && <p>{error}</p>}</>;
+}) => <Container>{error && <p>{error}</p>}</Container>;
 
 export default SearchPresenter;
