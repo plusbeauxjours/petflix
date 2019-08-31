@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Loader from "../../Components/Loader";
 import Section from "../../Components/Section";
+import Message from "../../Components/Message";
 
 const Container = styled.div`
   padding: 0 20px;
@@ -64,6 +65,12 @@ const SearchPresenter: React.FunctionComponent<IProps> = ({
         )}
       </>
     )}
+    {error && <Message text={error} />}
+    {tvResults &&
+      movieResults &&
+      movieResults.length === 0 &&
+      tvResults &&
+      tvResults.length === 0 && <Message text="Nothing found" />}
   </Container>
 );
 
