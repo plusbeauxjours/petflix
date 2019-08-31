@@ -1,6 +1,6 @@
 import React from "react";
 import HomePresenter from "./HomePresenter";
-import { moviesApi } from "../../api";
+import { movieApi } from "../../api";
 
 interface IProps {
   nowPlaying: null;
@@ -30,16 +30,16 @@ class HomeContainer extends React.Component<IProps, IState> {
     try {
       const {
         data: { results: nowPlaying }
-      } = await moviesApi.nowPlaying();
+      } = await movieApi.nowPlaying();
       const {
         data: { results: upcoming }
-      } = await moviesApi.upcoming();
+      } = await movieApi.upcoming();
       const {
         data: { results: popular }
-      } = await moviesApi.popular();
+      } = await movieApi.popular();
       this.setState({ nowPlaying, upcoming, popular });
     } catch {
-      this.setState({ error: "Can't find movies informateion" });
+      this.setState({ error: "Can't find movie informateion" });
     } finally {
       this.setState({
         loading: false

@@ -6,6 +6,7 @@ interface IProps {
   searchTerm: string;
   loading: boolean;
   error: string;
+  handleSubmit: () => void;
 }
 
 const SearchPresenter: React.FunctionComponent<IProps> = ({
@@ -13,15 +14,8 @@ const SearchPresenter: React.FunctionComponent<IProps> = ({
   tvResults,
   searchTerm,
   loading,
-  error
-}) => (
-  <>
-    <p>{movieResults}</p>
-    <p>{tvResults}</p>
-    <p>{searchTerm}</p>
-    <p>{loading}</p>
-    <p>{error}</p>
-  </>
-);
+  error,
+  handleSubmit
+}) => <>{error && <p>{error}</p>}</>;
 
 export default SearchPresenter;

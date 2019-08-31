@@ -1,27 +1,19 @@
 import React from "react";
 
 interface IProps {
-  movieResults: any;
-  tvResults: any;
-  searchTerm: string;
+  topRated: any;
+  popular: any;
+  airingToday: string;
   loading: boolean;
   error: string;
 }
 
 const TVPresenter: React.FunctionComponent<IProps> = ({
-  movieResults,
-  tvResults,
-  searchTerm,
+  topRated,
+  popular,
+  airingToday,
   loading,
   error
-}) => (
-  <>
-    <p>{movieResults}</p>
-    <p>{tvResults}</p>
-    <p>{searchTerm}</p>
-    <p>{loading}</p>
-    <p>{error}</p>
-  </>
-);
+}) => <>{error && <p>{error}</p>}</>;
 
 export default TVPresenter;

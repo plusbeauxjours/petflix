@@ -14,14 +14,6 @@ const HomePresenter: React.FunctionComponent<IProps> = ({
   popular,
   loading,
   error
-}) => (
-  <>
-    <p>{nowPlaying}</p>
-    <p>{upcoming}</p>
-    <p>{popular}</p>
-    <p>{loading}</p>
-    <p>{error}</p>
-  </>
-);
+}) => <>{error && <p>{error}</p>}</>;
 
 export default HomePresenter;
