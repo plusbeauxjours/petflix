@@ -65,9 +65,9 @@ const Poster: React.FunctionComponent<IProps> = ({
   title,
   rating,
   year,
-  isMovie = false
+  isMovie
 }) => (
-  <Link to={isMovie ? `/movie/${id}` : `/show/${id}`}>
+  <Link to={isMovie ? `/movie/${id}` : `/tv/${id}`}>
     <Container>
       <ImageContainer>
         <Image
@@ -77,6 +77,7 @@ const Poster: React.FunctionComponent<IProps> = ({
               : require("../assets/noPosterSmall.png")
           }
         />
+
         <Rating>
           <span role="img" aria-label="rating">
             ⭐️

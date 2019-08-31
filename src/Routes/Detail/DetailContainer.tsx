@@ -3,11 +3,7 @@ import DetailPresenter from "./DetailPresenter";
 import { RouteComponentProps } from "react-router";
 import { movieApi, tvApi } from "../../api";
 
-interface IProps extends RouteComponentProps<any> {
-  result: any;
-  loading: boolean;
-  error: string;
-}
+interface IProps extends RouteComponentProps<any> {}
 
 interface IState {
   result: any;
@@ -44,16 +40,9 @@ class DetailContainer extends React.Component<IProps, IState> {
     let result = null;
     try {
       if (isMovie) {
-        console.log("result");
-        ({
-          data: { result }
-        } = await movieApi.movieDetail(parsedId));
-
-        console.log(result);
+        ({ data: result } = await movieApi.movieDetail(parsedId));
       } else {
-        ({
-          data: { result }
-        } = await tvApi.showDetail(parsedId));
+        ({ data: result } = await tvApi.showDetail(parsedId));
       }
     } catch {
       this.setState({ error: "Cant find anythig." });
