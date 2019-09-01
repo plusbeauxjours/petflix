@@ -4,9 +4,10 @@ import Loader from "../../Components/Loader";
 import Section from "../../Components/Section";
 import Message from "../../Components/Message";
 import Poster from "../../Components/Poster";
+import Helmet from "react-helmet";
 
 const Container = styled.div`
-  padding: 0 20px;
+  padding: 20px;
 `;
 
 const Form = styled.form`
@@ -39,6 +40,9 @@ const SearchPresenter: React.FunctionComponent<IProps> = ({
   updateTerm
 }) => (
   <Container>
+    <Helmet>
+      <title>Search | Nomflix</title>
+    </Helmet>
     <Form onSubmit={handleSubmit}>
       <Input
         placeholder="Search Movies or TV Shows..."

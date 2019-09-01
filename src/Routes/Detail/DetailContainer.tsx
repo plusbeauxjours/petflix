@@ -51,8 +51,15 @@ class DetailContainer extends React.Component<IProps, IState> {
     }
   }
   public render() {
-    const { result, loading, error } = this.state;
-    return <DetailPresenter result={result} loading={loading} error={error} />;
+    const { result, loading, error, isMovie } = this.state;
+    return (
+      <DetailPresenter
+        result={result}
+        loading={loading}
+        error={error}
+        isMovie={isMovie}
+      />
+    );
   }
 }
 
