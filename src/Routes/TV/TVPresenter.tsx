@@ -27,7 +27,7 @@ const TVPresenter: React.FunctionComponent<IProps> = ({
 }) => (
   <>
     <Helmet>
-      <title>TV Shows | Nomflix</title>
+      <title>TV Shows | Petflix</title>
     </Helmet>
     {loading ? (
       <Loader />

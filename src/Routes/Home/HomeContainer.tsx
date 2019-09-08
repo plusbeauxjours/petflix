@@ -31,13 +31,13 @@ class HomeContainer extends React.Component<IProps, IState> {
       const {
         data: { results: nowPlaying }
       } = await movieApi.nowPlaying();
-      const {
-        data: { results: upcoming }
-      } = await movieApi.upcoming();
+      // const {
+      //   data: { results: upcoming }
+      // } = await movieApi.upcoming();
       const {
         data: { results: popular }
       } = await movieApi.popular();
-      this.setState({ nowPlaying, upcoming, popular });
+      this.setState({ nowPlaying, popular });
     } catch {
       this.setState({ error: "Can't find movie informateion" });
     } finally {
@@ -47,11 +47,11 @@ class HomeContainer extends React.Component<IProps, IState> {
     }
   }
   public render() {
-    const { nowPlaying, upcoming, popular, loading, error } = this.state;
+    const { nowPlaying, popular, loading, error } = this.state;
     return (
       <HomePresenter
         nowPlaying={nowPlaying}
-        upcoming={upcoming}
+        // upcoming={upcoming}
         popular={popular}
         loading={loading}
         error={error}

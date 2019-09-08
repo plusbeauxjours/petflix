@@ -42,6 +42,12 @@ const Cover = styled.div<ITheme>`
   border-radius: 5px;
 `;
 
+const SeasonContainer = styled.span`
+  display: flex;
+  margin-top: 5px;
+  cursor: pointer;
+`;
+
 const Data = styled.div`
   width: 70%;
   margin-left: 10px;
@@ -49,16 +55,20 @@ const Data = styled.div`
 
 const Title = styled.h3`
   font-size: 32px;
+  margin-bottom: 20px;
 `;
 
 const ItemContainer = styled.div`
-  margin: 20px 0;
+  margin-bottom: 20px;
 `;
 
 const Item = styled.span``;
 
 const Divider = styled.span`
   margin: 0 10px;
+  &:last-child {
+    visibility: hidden;
+  }
 `;
 
 const Overview = styled.p`
@@ -73,6 +83,54 @@ const Imdb = styled.span`
   font-size: 14px;
 `;
 
+const Space = styled.div`
+  margin-bottom: 30px;
+`;
+
+const Modal = styled.div`
+  background-color: rgba(33, 33, 33, 0.85);
+  border: 1px solid rgba(230, 230, 230, 0.95);
+  width: 500px;
+  border-radius: 1px;
+  z-index: 10;
+  padding: 30px 10px;
+`;
+
+const ModalContainer = styled.div`
+  z-index: 8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+`;
+
+const ModalOverlay = styled.div`
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: rgba(33, 33, 33, 0.85);
+`;
+
+const SmallTitle = styled.span`
+  display: flex;
+  margin: 5px 0;
+  text-decoration: underline;
+`;
+
+const ToggleCover = styled(Cover)`
+  width: 100px;
+  height: 150px;
+`;
+
+const ToggleOverview = styled(Overview)`
+  width: 100%;
+`;
+
 interface ITheme {
   bgImage: string;
 }
@@ -82,89 +140,167 @@ interface IProps {
   error: string;
   loading: boolean;
   isMovie: boolean;
+  modalOpen: boolean;
+  toggleModal: any;
+  seasonResult: any;
 }
 
 const DetailPresenter: React.FunctionComponent<IProps> = ({
   result,
   loading,
   error,
-  isMovie
+  isMovie,
+  modalOpen,
+  toggleModal,
+  seasonResult
 }) =>
   loading ? (
     <>
       <Helmet>
-        <title>Loading | Nomflix</title>
+        <title>Loading | Petflix</title>
       </Helmet>
       <Loader />
     </>
   ) : (
-    <Container>
-      <Helmet>
-        <title>
-          {result.original_title ? result.original_title : result.original_name}{" "}
-          | Nomflix
-        </title>
-      </Helmet>
-      <Backdrop
-        bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`}
-      />
-      <Content>
-        <Cover
-          bgImage={
-            result.poster_path
-              ? `https://image.tmdb.org/t/p/original${result.poster_path}`
-              : require("../../assets/noPosterSmall.png")
-          }
-        />
-        <Data>
-          <Title>
+    <>
+      {modalOpen && (
+        <ModalContainer>
+          {console.log(seasonResult)}
+          <ModalOverlay onClick={() => toggleModal(null)} />
+          <Modal>
+            <Content>
+              <ToggleCover
+                bgImage={
+                  seasonResult.poster_path
+                    ? `https://image.tmdb.org/t/p/original${seasonResult.poster_path}`
+                    : require("../../assets/noPosterSmall.png")
+                }
+              />
+              <Data>
+                <ItemContainer>
+                  <Item>{result.original_name}</Item>
+                  <Divider>•</Divider>
+                  <Item>{seasonResult.name && seasonResult.name}</Item>
+                  <Divider>•</Divider>
+                  <Item>
+                    {seasonResult.release_date
+                      ? result.release_date.substring(0, 4)
+                      : result.first_air_date.substring(0, 4)}
+                  </Item>
+                  <Divider>•</Divider>
+                  <Item>
+                    <span role="img" aria-label="rating">
+                      ⭐️
+                    </span>
+                    &nbsp;
+                    {result.vote_average}/10
+                  </Item>
+                </ItemContainer>
+                <ToggleOverview>{seasonResult.overview}</ToggleOverview>
+              </Data>
+            </Content>
+          </Modal>
+        </ModalContainer>
+      )}
+      <Container>
+        <Helmet>
+          <title>
             {result.original_title
               ? result.original_title
-              : result.original_name}
-          </Title>
-          <ItemContainer>
-            <Item>
-              {result.release_date
-                ? result.release_date.substring(0, 4)
-                : result.first_air_date.substring(0, 4)}
-            </Item>
-            <Divider>•</Divider>
-            <Item>
-              {result.runtime ? result.runtime : result.episode_run_time[0]} min
-            </Item>
-            <Divider>•</Divider>
-            {isMovie && (
-              <>
-                <a href={`https://www.imdb.com/title/${result.imdb_id}`}>
+              : result.original_name}{" "}
+            | Petflix
+          </title>
+        </Helmet>
+        <Backdrop
+          bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`}
+        />
+        <Content>
+          <Cover
+            bgImage={
+              result.poster_path
+                ? `https://image.tmdb.org/t/p/original${result.poster_path}`
+                : require("../../assets/noPosterSmall.png")
+            }
+          />
+          <Data>
+            <Title>
+              {result.original_title
+                ? result.original_title
+                : result.original_name}
+            </Title>
+            <ItemContainer>
+              <Item>
+                {result.release_date
+                  ? result.release_date.substring(0, 4)
+                  : result.first_air_date.substring(0, 4)}
+              </Item>
+              <Divider>•</Divider>
+              {result.runtime && (
+                <>
                   <Item>
-                    <Imdb>IMDb</Imdb>
+                    {result.runtime}
+                    min
                   </Item>
-                </a>
-                <Divider>•</Divider>
-              </>
-            )}
-            <Item>
-              {result.genres &&
-                result.genres.map((genre, index) =>
-                  index === result.genres.length - 1
-                    ? genre.name
-                    : `${genre.name} / `
-                )}
-            </Item>
-            <Divider>•</Divider>
-            <Item>
-              <span role="img" aria-label="rating">
-                ⭐️
-              </span>
-              &nbsp;
-              {result.vote_average}/10
-            </Item>
-          </ItemContainer>
-          <Overview>{result.overview}</Overview>
-        </Data>
-      </Content>
-      {error && <Message text={error} />}
-    </Container>
+                  <Divider>•</Divider>
+                </>
+              )}
+              {isMovie && (
+                <>
+                  <a href={`https://www.imdb.com/title/${result.imdb_id}`}>
+                    <Item>
+                      <Imdb>IMDb</Imdb>
+                    </Item>
+                  </a>
+                  <Divider>•</Divider>
+                </>
+              )}
+              <Item>
+                {result.genres &&
+                  result.genres.map((genre, index) =>
+                    index === result.genres.length - 1
+                      ? genre.name
+                      : `${genre.name} / `
+                  )}
+              </Item>
+              <Divider>•</Divider>
+              <Item>
+                <span role="img" aria-label="rating">
+                  ⭐️
+                </span>
+                &nbsp;
+                {result.vote_average}/10
+              </Item>
+            </ItemContainer>
+            <Overview>{result.overview}</Overview>
+            <Space />
+
+            <SeasonContainer>
+              {result.seasons &&
+                result.seasons.map((season, index) => (
+                  <>
+                    <SmallTitle
+                      key={index}
+                      onClick={() => toggleModal(season.season_number)}
+                    >
+                      {season.name}
+                    </SmallTitle>
+                    &nbsp;&nbsp;
+                  </>
+                ))}
+            </SeasonContainer>
+            {result.production_companies &&
+              result.production_companies.map(production_companie => (
+                <p>{production_companie}</p>
+              ))}
+            {result.production_companies &&
+              result.production_companies.map(production_companie => (
+                <p>{production_companie}</p>
+              ))}
+          </Data>
+        </Content>
+        {error && <Message text={error} />}
+      </Container>
+    </>
   );
 
 export default DetailPresenter;

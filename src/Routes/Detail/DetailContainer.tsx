@@ -10,6 +10,8 @@ interface IState {
   loading: boolean;
   error: string;
   isMovie: boolean;
+  modalOpen: boolean;
+  seasonResult: any;
 }
 
 class DetailContainer extends React.Component<IProps, IState> {
@@ -22,7 +24,9 @@ class DetailContainer extends React.Component<IProps, IState> {
       result: null,
       loading: true,
       error: null,
-      isMovie: pathname.includes("/movie/")
+      isMovie: pathname.includes("/movie/"),
+      modalOpen: false,
+      seasonResult: null
     };
   }
   public async componentDidMount() {
@@ -41,8 +45,10 @@ class DetailContainer extends React.Component<IProps, IState> {
     try {
       if (isMovie) {
         ({ data: result } = await movieApi.movieDetail(parsedId));
+        console.log(result);
       } else {
         ({ data: result } = await tvApi.showDetail(parsedId));
+        console.log(result);
       }
     } catch {
       this.setState({ error: "Cant find anythig." });
@@ -51,16 +57,47 @@ class DetailContainer extends React.Component<IProps, IState> {
     }
   }
   public render() {
-    const { result, loading, error, isMovie } = this.state;
+    const {
+      result,
+      loading,
+      error,
+      isMovie,
+      modalOpen,
+      seasonResult
+    } = this.state;
     return (
       <DetailPresenter
         result={result}
         loading={loading}
         error={error}
         isMovie={isMovie}
+        modalOpen={modalOpen}
+        toggleModal={this.toggleModal}
+        seasonResult={seasonResult}
       />
     );
   }
+
+  public toggleModal = async season_number => {
+    const { modalOpen } = this.state;
+    if (modalOpen) {
+      this.setState({ modalOpen: false });
+    } else {
+      const {
+        match: {
+          params: { id = null }
+        }
+      } = this.props;
+      const parsedId = parseInt(id);
+      const parsedSeasonNumber = parseInt(season_number);
+      const { data: seasonResult } = await tvApi.seasonDetail(
+        parsedId,
+        parsedSeasonNumber
+      );
+      this.setState({ seasonResult });
+      this.setState({ modalOpen: true });
+    }
+  };
 }
 
 export default DetailContainer;

@@ -41,7 +41,7 @@ const SearchPresenter: React.FunctionComponent<IProps> = ({
 }) => (
   <Container>
     <Helmet>
-      <title>Search | Nomflix</title>
+      <title>Search | Petflix</title>
     </Helmet>
     <Form onSubmit={handleSubmit}>
       <Input
