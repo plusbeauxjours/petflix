@@ -12,7 +12,7 @@ const Container = styled.div`
 
 interface IProps {
   nowPlaying: any;
-  // upcoming: any;
+  upcoming: any;
   popular: any;
   loading: boolean;
   error: null;
@@ -20,7 +20,7 @@ interface IProps {
 
 const HomePresenter: React.FunctionComponent<IProps> = ({
   nowPlaying,
-  // upcoming,
+  upcoming,
   popular,
   loading,
   error
@@ -51,7 +51,7 @@ const HomePresenter: React.FunctionComponent<IProps> = ({
             ))}
           </Section>
         )}
-        {/* {upcoming && upcoming.length > 0 && (
+        {upcoming && upcoming.length > 0 && (
           <Section title="Upcoming Movies">
             {upcoming.map(movie => (
               <Poster
@@ -65,7 +65,7 @@ const HomePresenter: React.FunctionComponent<IProps> = ({
               />
             ))}
           </Section>
-        )} */}
+        )}
         {popular && popular.length > 0 && (
           <Section title="Popular Movies">
             {popular.map(movie => (
