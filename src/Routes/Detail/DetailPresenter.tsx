@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Loader from "../../Components/Loader";
 import Message from "../../Components/Message";
 import Helmet from "react-helmet";
+import countries from "../../countries";
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -60,9 +61,16 @@ const Title = styled.h3`
 
 const ItemContainer = styled.div`
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 const Item = styled.span``;
+
+const Flag = styled.span`
+  font-size: 20px;
+  margin-right: 5px;
+`;
 
 const Divider = styled.span`
   margin: 0 10px;
@@ -75,7 +83,7 @@ const Overview = styled.p`
   font-size: 12px;
   opacity: 0.7;
   line-height: 1.5;
-  width: 50%;
+  width: 70%;
 `;
 
 const Imdb = styled.span`
@@ -90,7 +98,7 @@ const Space = styled.div`
 const Modal = styled.div`
   background-color: rgba(33, 33, 33, 0.85);
   border: 1px solid rgba(230, 230, 230, 0.95);
-  width: 500px;
+  width: 600px;
   border-radius: 1px;
   z-index: 10;
   padding: 30px 10px;
@@ -118,8 +126,8 @@ const ModalOverlay = styled.div`
 
 const SmallTitle = styled.span`
   display: flex;
-  margin: 5px 0;
-  text-decoration: underline;
+  font-weight: 400;
+  margin-bottom: 10px;
 `;
 
 const ToggleCover = styled(Cover)`
@@ -131,6 +139,24 @@ const ToggleOverview = styled(Overview)`
   width: 100%;
 `;
 
+const Logo = styled.img`
+  height: 40px;
+  margin-right: 20px;
+  background-color: rgba(250, 250, 250, 1);
+`;
+
+const OverviewLine = styled.p`
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.7;
+  line-height: 1.5;
+  margin-right: 20px;
+`;
+
+const IFrame = styled.iframe`
+  z-index: 10;
+`;
 interface ITheme {
   bgImage: string;
 }
@@ -153,8 +179,10 @@ const DetailPresenter: React.FunctionComponent<IProps> = ({
   modalOpen,
   toggleModal,
   seasonResult
-}) =>
-  loading ? (
+}) => {
+  const [videoOpen, setVideoOpen] = useState(false);
+  const [videoUrl, setVideoUrl] = useState();
+  return loading ? (
     <>
       <Helmet>
         <title>Loading | Petflix</title>
@@ -163,6 +191,16 @@ const DetailPresenter: React.FunctionComponent<IProps> = ({
     </>
   ) : (
     <>
+      {videoOpen && (
+        <ModalContainer>
+          <ModalOverlay onClick={() => setVideoOpen(false)} />
+          <IFrame
+            width="640"
+            height="360"
+            src={`http://www.youtube.com/embed/${videoUrl}?autoplay=1&origin=http://example.com`}
+          />
+        </ModalContainer>
+      )}
       {modalOpen && (
         <ModalContainer>
           {console.log(seasonResult)}
@@ -270,6 +308,27 @@ const DetailPresenter: React.FunctionComponent<IProps> = ({
                 &nbsp;
                 {result.vote_average}/10
               </Item>
+              <Divider>•</Divider>
+              {result.production_countries &&
+                result.production_countries.map((production_country, index) => (
+                  <Flag key={index}>
+                    {
+                      countries.find(
+                        countries =>
+                          countries.code === production_country.iso_3166_1
+                      ).flag
+                    }
+                  </Flag>
+                ))}
+              {result.origin_country &&
+                result.origin_country.map((country, index) => (
+                  <Flag key={index}>
+                    {
+                      countries.find(countries => countries.code === country)
+                        .flag
+                    }
+                  </Flag>
+                ))}
             </ItemContainer>
             <Overview>{result.overview}</Overview>
             <Space />
@@ -277,30 +336,56 @@ const DetailPresenter: React.FunctionComponent<IProps> = ({
             <SeasonContainer>
               {result.seasons &&
                 result.seasons.map((season, index) => (
-                  <>
-                    <SmallTitle
-                      key={index}
-                      onClick={() => toggleModal(season.season_number)}
-                    >
-                      {season.name}
-                    </SmallTitle>
-                    &nbsp;&nbsp;
-                  </>
+                  <OverviewLine
+                    key={index}
+                    onClick={() => toggleModal(season.season_number)}
+                  >
+                    {season.name}
+                  </OverviewLine>
                 ))}
             </SeasonContainer>
+            <Space />
+            <SmallTitle>
+              {result.production_companies.length === 1
+                ? "Production Company"
+                : "Production Companies"}
+            </SmallTitle>
             {result.production_companies &&
-              result.production_companies.map(production_companie => (
-                <p>{production_companie}</p>
-              ))}
-            {result.production_companies &&
-              result.production_companies.map(production_companie => (
-                <p>{production_companie}</p>
-              ))}
+              result.production_companies.map((production_company, index) =>
+                production_company.logo_path ? (
+                  <Logo
+                    key={index}
+                    src={
+                      production_company.logo_path
+                        ? `https://image.tmdb.org/t/p/w200${production_company.logo_path}`
+                        : require("../../assets/noPosterSmall.png")
+                    }
+                  />
+                ) : (
+                  <Overview key={index}>{production_company.name}</Overview>
+                )
+              )}
+            <Space />
+            <SmallTitle>
+              {result.videos.results.length === 1 ? "Video" : "Videos"}
+            </SmallTitle>
+            {result.videos.results.map((result, index) => (
+              <OverviewLine
+                key={index}
+                onClick={() => {
+                  setVideoUrl(result.key);
+                  setVideoOpen(true);
+                }}
+              >
+                {result.name}
+              </OverviewLine>
+            ))}
           </Data>
         </Content>
         {error && <Message text={error} />}
       </Container>
     </>
   );
+};
 
 export default DetailPresenter;
