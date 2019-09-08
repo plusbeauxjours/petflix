@@ -144,6 +144,11 @@ const Logo = styled.img`
   margin-right: 20px;
   background-color: rgba(250, 250, 250, 1);
 `;
+const CompanyName = styled.span`
+  font-size: 15px;
+  margin-right: 20px;
+  text-transform: uppercase;
+`;
 
 const OverviewLine = styled.p`
   text-decoration: underline;
@@ -362,7 +367,9 @@ const DetailPresenter: React.FunctionComponent<IProps> = ({
                     }
                   />
                 ) : (
-                  <Overview key={index}>{production_company.name}</Overview>
+                  <CompanyName key={index}>
+                    {production_company.name}
+                  </CompanyName>
                 )
               )}
             <Space />
