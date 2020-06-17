@@ -23,7 +23,7 @@ const HomePresenter: React.FunctionComponent<IProps> = ({
   upcoming,
   popular,
   loading,
-  error
+  error,
 }) => (
   <>
     <Helmet>
@@ -38,14 +38,14 @@ const HomePresenter: React.FunctionComponent<IProps> = ({
         </Helmet>
         {nowPlaying && nowPlaying.length > 0 && (
           <Section title="Now Playing">
-            {nowPlaying.map(movie => (
+            {nowPlaying.map((movie) => (
               <Poster
                 key={movie.id}
                 id={movie.id}
                 title={movie.original_title}
                 imageUrl={movie.poster_path}
                 rating={movie.vote_average}
-                year={movie.release_date.substring(0, 4)}
+                year={movie.release_date && movie.release_date.substring(0, 4)}
                 isMovie={true}
               />
             ))}
@@ -53,14 +53,14 @@ const HomePresenter: React.FunctionComponent<IProps> = ({
         )}
         {upcoming && upcoming.length > 0 && (
           <Section title="Upcoming Movies">
-            {upcoming.map(movie => (
+            {upcoming.map((movie) => (
               <Poster
                 key={movie.id}
                 id={movie.id}
                 title={movie.original_title}
                 imageUrl={movie.poster_path}
                 rating={movie.vote_average}
-                year={movie.release_date.substring(0, 4)}
+                year={movie.release_date && movie.release_date.substring(0, 4)}
                 isMovie={true}
               />
             ))}
@@ -68,16 +68,21 @@ const HomePresenter: React.FunctionComponent<IProps> = ({
         )}
         {popular && popular.length > 0 && (
           <Section title="Popular Movies">
-            {popular.map(movie => (
-              <Poster
-                key={movie.id}
-                id={movie.id}
-                title={movie.original_title}
-                imageUrl={movie.poster_path}
-                rating={movie.vote_average}
-                year={movie.release_date.substring(0, 4)}
-                isMovie={true}
-              />
+            {popular.map((movie) => (
+              <>
+                {console.log(movie)}
+                <Poster
+                  key={movie.id}
+                  id={movie.id}
+                  title={movie.original_title}
+                  imageUrl={movie.poster_path}
+                  rating={movie.vote_average}
+                  year={
+                    movie.release_date && movie.release_date.substring(0, 4)
+                  }
+                  isMovie={true}
+                />
+              </>
             ))}
           </Section>
         )}
