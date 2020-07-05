@@ -11,7 +11,7 @@
 
 ### Technical Sheet
 
-> React-Native, Axios, Themoviedb API, TypeScript, Styled-Components
+> React, Axios, Themoviedb API, TypeScript, Styled-Components
 
 ### Portfolio Link
 
